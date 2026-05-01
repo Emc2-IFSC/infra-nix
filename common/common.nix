@@ -1,5 +1,5 @@
 { pkgs, lib, ... }: {
-  boot.kernelPackages = pkgs.linuxPackages_hardened;
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_hardened;
 
   environment.systemPackages = [
     pkgs.curl
@@ -11,7 +11,7 @@
     gc = {
       automatic = lib.mkDefault true;
       dates = lib.mkDefault "weekly";
-      options = "-d --delete-older-than 30d";
+      options = lib.mkDefault "-d --delete-older-than 90d";
     };
     settings = {
       experimental-features = ["nix-command" "flakes"];
@@ -26,21 +26,21 @@
 
   services = {
     openssh = {
-      enable = true;
-      ports = [
+      enable = lib.mkDefault true;
+      ports = lib.mkDefault [
         22
         # Precisamos de outra porta, pois a 22 só é acessível dentro da USP
         22001
         22002
       ];
       settings = {
-        PasswordAuthentication = false;
+        PasswordAuthentication = lib.mkDefault false;
       };
     };
   };
 
   users = {
-    mutableUsers = false;
+    mutableUsers = lib.mkDefault false;
     users = {
       admin = {
         isNormalUser = true;
@@ -54,17 +54,10 @@
   # Sudo sem senha
   security.sudo.extraConfig = "%wheel ALL = (ALL) NOPASSWD: ALL";
 
-  boot.loader.grub = {
-    # no need to set devices, disko will add all devices that have a EF02 partition to the list already
-    # devices = [ ];
-    efiSupport = true;
-    efiInstallAsRemovable = true;
-  };
-
   i18n = {
-    defaultLocale = "en_US.UTF-8";
+    defaultLocale = lib.mkDefault "en_US.UTF-8";
     extraLocaleSettings = {
-      LC_TIME = "pt_BR.UTF-8";
+      LC_TIME = lib.mkDefault "pt_BR.UTF-8";
     };
   };
 
