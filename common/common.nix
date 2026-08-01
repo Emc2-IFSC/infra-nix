@@ -1,5 +1,5 @@
 { pkgs, lib, ... }: {
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_hardened;
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages;
 
   environment.systemPackages = [
     pkgs.curl
@@ -40,7 +40,7 @@
   };
 
   users = {
-    mutableUsers = lib.mkDefault false;
+    mutableUsers = lib.mkDefault true;
     users = {
       admin = {
         isNormalUser = true;
@@ -51,15 +51,16 @@
     };
   };
 
-  # Sudo sem senha
-  security.sudo.extraConfig = "%wheel ALL = (ALL) NOPASSWD: ALL";
-
   i18n = {
     defaultLocale = lib.mkDefault "en_US.UTF-8";
     extraLocaleSettings = {
       LC_TIME = lib.mkDefault "pt_BR.UTF-8";
     };
   };
+
+  security.sudo.extraConfig = with pkgs; ''
+    Defaults pwfeedback
+  '';
 
   time.timeZone = "America/Sao_Paulo";
 }
