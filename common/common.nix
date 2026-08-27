@@ -5,6 +5,26 @@
     pkgs.curl
     pkgs.git 
   ];
+
+  # Zsh
+  environment.shells = [ pkgs.zsh ];
+  users.defaultUserShell = pkgs.zsh;
+  programs.zsh = {
+     enable = true;
+     enableCompletion = true;
+     autosuggestions.enable = true;
+     syntaxHighlighting.enable = true;
+
+    ohMyZsh = {
+      enable = true;
+      plugins = [ "git" ];
+      theme = "agnoster";
+    };
+
+    shellAliases = {
+      cdn = "cd /home/admin/nixos-config";
+    };
+  };
  
 
   nix = {
@@ -58,7 +78,7 @@
     };
   };
 
-  security.sudo.extraConfig = with pkgs; ''
+  security.sudo.extraConfig = ''
     Defaults pwfeedback
   '';
 
