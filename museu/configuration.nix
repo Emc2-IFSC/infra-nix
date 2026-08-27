@@ -2,8 +2,9 @@
   imports = [
     inputs.sops-nix.nixosModules.sops
     ./hardware-configuration.nix
-    #./services
     ../common/common.nix
+
+    ./services/mysql.nix
   ];
 
   networking = {

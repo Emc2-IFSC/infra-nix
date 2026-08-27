@@ -22,7 +22,7 @@
     };
 
     shellAliases = {
-      cdn = "cd /home/admin/nixos-config";
+      cdn = "cd /home/admin/infra-nix";
     };
   };
  
