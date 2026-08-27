@@ -6,17 +6,21 @@
     ../common/common.nix
   ];
 
-  boot.loader.grub = {
-    # no need to set devices, disko will add all devices that have a EF02 partition to the list already
-    # devices = [ ];
-    efiSupport = true;
-    efiInstallAsRemovable = true;
-  };
-
   networking = {
     hostName = "museu";
-    useDHCP = true;
+    #useDHCP = true;
+    domain = "";
   };
 
-  system.stateVersion = "25.05";
+  # nixos-infect generated config below
+
+  # Workaround for https://github.com/NixOS/nix/issues/8502
+  services.logrotate.checkConfig = false;
+
+  boot.tmp.cleanOnBoot = true;
+  zramSwap.enable = true;
+  
+  users.users.root.openssh.authorizedKeys.keys = import ../keys.nix;
+
+  system.stateVersion = "23.11";
 }
